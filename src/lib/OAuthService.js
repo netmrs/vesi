@@ -129,6 +129,20 @@ class OAuthService {
 
   // Exchange authorization code for access token
   async exchangeCodeForToken(config, code, appName) {
+    // For now, we'll simulate the token exchange since we don't have client secrets in frontend
+    // In production, this should be handled by a backend API
+    console.log(`Simulating token exchange for ${appName} with code: ${code}`);
+    
+    // Simulate successful token exchange
+    return {
+      access_token: `mock_token_${appName}_${Date.now()}`,
+      refresh_token: `mock_refresh_${appName}_${Date.now()}`,
+      expires_in: 3600,
+      scope: Array.isArray(config.scopes) ? config.scopes.join(' ') : config.scopes
+    };
+    
+    // TODO: Replace with actual backend API call when client secrets are available
+    /*
     const response = await fetch(config.tokenUrl, {
       method: 'POST',
       headers: {
@@ -143,12 +157,9 @@ class OAuthService {
         redirect_uri: config.redirectUri
       })
     });
+    */
 
-    if (!response.ok) {
-      throw new Error(`Token exchange failed: ${response.statusText}`);
-    }
-
-    return await response.json();
+    // Response handling moved to commented section above
   }
 
   // Store access token securely
@@ -182,6 +193,22 @@ class OAuthService {
 
   // Refresh expired token
   async refreshToken(appName, refreshToken) {
+    // For now, simulate token refresh since we don't have client secrets
+    console.log(`Simulating token refresh for ${appName}`);
+    
+    // Simulate successful refresh
+    const newTokenData = {
+      access_token: `mock_refreshed_token_${appName}_${Date.now()}`,
+      refresh_token: `mock_new_refresh_${appName}_${Date.now()}`,
+      expires_in: 3600,
+      scope: this.oauthConfigs[appName].scopes
+    };
+    
+    this.storeToken(appName, newTokenData);
+    return newTokenData.access_token;
+    
+    // TODO: Replace with actual backend API call when client secrets are available
+    /*
     const config = this.oauthConfigs[appName];
     
     try {
@@ -212,6 +239,7 @@ class OAuthService {
       this.removeToken(appName);
       throw new Error('Token refresh failed. Please reconnect your account.');
     }
+    */
   }
 
   // Remove stored token
