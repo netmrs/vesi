@@ -1,0 +1,35 @@
+<svg width="120" height="40" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Water droplet icon -->
+  <defs>
+    <linearGradient id="dropletGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Droplet shape -->
+  <path d="M8 8 C8 4, 12 2, 16 8 C16 4, 20 2, 24 8 C24 12, 20 16, 16 20 C12 16, 8 12, 8 8 Z" 
+        fill="url(#dropletGradient)" 
+        stroke="none"/>
+  
+  <!-- Wave lines inside droplet -->
+  <path d="M12 12 C14 10, 16 10, 18 12" 
+        stroke="#1d4ed8" 
+        stroke-width="1.5" 
+        fill="none" 
+        opacity="0.7"/>
+  <path d="M11 16 C13 14, 15 14, 17 16" 
+        stroke="#1d4ed8" 
+        stroke-width="1.5" 
+        fill="none" 
+        opacity="0.7"/>
+  
+  <!-- VESI text -->
+  <text x="32" y="28" 
+        font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" 
+        font-size="20" 
+        font-weight="700" 
+        fill="#2563eb" 
+        letter-spacing="0.5px">VESI</text>
+</svg>
+

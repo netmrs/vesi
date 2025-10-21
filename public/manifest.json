@@ -1,0 +1,17 @@
+{
+  "short_name": "Vesi",
+  "name": "Vesi - Flow with purpose. Grow with light.",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#3A6EA5",
+  "background_color": "#F8FBFF",
+  "description": "A faith-based productivity and journaling app for spiritual growth."
+}
+

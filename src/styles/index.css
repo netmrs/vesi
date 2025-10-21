@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F8FBFF;
+    color: #1F2937;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-vesi-deep text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply bg-vesi-blue text-vesi-deep px-6 py-3 rounded-xl font-medium hover:bg-blue-100 transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-md p-6 border border-gray-100;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-vesi-accent focus:border-transparent transition-all duration-200;
+  }
+  
+  .tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vesi-blue text-vesi-deep;
+  }
+  
+  .streak-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
