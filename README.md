@@ -1,16 +1,21 @@
-# Vesi - Flow with purpose. Grow with light.
+# Vesi - One-Stop Wellness App
 
-A beautiful, minimalist faith-based productivity and journaling app built with React and Firebase.
+A comprehensive wellness and productivity app built with React, featuring spiritual growth, mental health, physical fitness, and OAuth integrations.
 
 ## 🌊 About Vesi
 
-Vesi (Finnish for "water") symbolizes renewal, flow, and growth. It's designed to help users grow spiritually and personally through daily reflections, journaling, and habit tracking in a calm, peaceful environment.
+Vesi (Finnish for "water") symbolizes renewal, flow, and growth. It's designed to help users grow spiritually, mentally, and physically through daily reflections, journaling, habit tracking, and integrated wellness tools in a calm, peaceful environment.
 
 ## ✨ Features
 
 - **Daily Reflections**: Inspirational quotes and scriptures to start your day
 - **Journal Entries**: Personal reflections with tags and organization
 - **Goals & Habits Tracker**: Build positive habits with streak tracking
+- **AI-Powered Insights**: Personalized wellness guidance and goal suggestions
+- **OAuth Integrations**: Connect with Spotify, Strava, and other wellness apps
+- **Spiritual Growth**: Scripture management and interfaith content
+- **Mental Wellness**: Mindfulness tools and mental health resources
+- **Physical Wellness**: Fitness tracking and health integrations
 - **Clean Interface**: Minimal, calming design focused on serenity
 - **Authentication**: Secure user accounts with Firebase Auth
 - **Real-time Sync**: All data syncs across devices with Firestore
@@ -22,12 +27,14 @@ Vesi (Finnish for "water") symbolizes renewal, flow, and growth. It's designed t
 - Node.js (v14 or higher)
 - npm or yarn
 - Firebase project
+- OpenAI API key (for AI features)
+- OAuth app credentials (Spotify, Strava, etc.)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/netmrs/vesi.git
    cd vesi
    ```
 
@@ -36,26 +43,22 @@ Vesi (Finnish for "water") symbolizes renewal, flow, and growth. It's designed t
    npm install
    ```
 
-3. **Set up Firebase**
+3. **Set up environment variables**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   REACT_APP_OPENAI_API_KEY=your_openai_api_key
+   REACT_APP_STRAVA_CLIENT_ID=your_strava_client_id
+   REACT_APP_STRAVA_CLIENT_SECRET=your_strava_client_secret
+   REACT_APP_SPOTIFY_CLIENT_ID=your_spotify_client_id
+   REACT_APP_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
+   ```
+
+4. **Set up Firebase**
    - Create a new Firebase project at [Firebase Console](https://console.firebase.google.com)
    - Enable Authentication (Email/Password)
    - Enable Firestore Database
    - Copy your Firebase config and update `src/lib/firebase.js`
-
-4. **Update Firebase Configuration**
-   
-   Replace the demo configuration in `src/lib/firebase.js` with your actual Firebase config:
-   
-   ```javascript
-   const firebaseConfig = {
-     apiKey: "your-api-key",
-     authDomain: "your-project.firebaseapp.com",
-     projectId: "your-project-id",
-     storageBucket: "your-project.appspot.com",
-     messagingSenderId: "your-sender-id",
-     appId: "your-app-id"
-   };
-   ```
 
 5. **Start the development server**
    ```bash
@@ -71,6 +74,7 @@ Vesi (Finnish for "water") symbolizes renewal, flow, and growth. It's designed t
 ```
 src/
 ├── components/          # Reusable UI components
+│   ├── AIChat.jsx       # AI-powered chat interface
 │   ├── AuthForm.jsx     # Login/signup form
 │   ├── EntryCard.jsx    # Journal entry display
 │   ├── GoalTracker.jsx  # Goals and habits tracker
@@ -78,12 +82,18 @@ src/
 │   ├── ReflectionCard.jsx # Daily reflection display
 │   └── TagSelector.jsx  # Tag selection component
 ├── lib/                 # Utilities and configurations
+│   ├── aiService.js     # AI service integration
 │   ├── firebase.js      # Firebase configuration
+│   ├── OAuthService.js  # OAuth integration service
 │   └── utils.js         # Helper functions
 ├── pages/               # Main application pages
 │   ├── Home.jsx         # Dashboard/home page
 │   ├── Journal.jsx      # Journal entries page
 │   ├── Goals.jsx        # Goals and habits page
+│   ├── Spirituality.jsx # Spiritual growth page
+│   ├── Mental.jsx       # Mental wellness page
+│   ├── Physical.jsx     # Physical wellness page
+│   ├── Media.jsx        # Media and content page
 │   └── Settings.jsx     # User settings page
 ├── styles/              # CSS and styling
 │   └── index.css        # Main styles with Tailwind
@@ -106,13 +116,14 @@ src/
 ## 🔧 Available Scripts
 
 - `npm start` - Runs the app in development mode
-- `npm build` - Builds the app for production
+- `npm run build` - Builds the app for production
 - `npm test` - Launches the test runner
-- `npm eject` - Ejects from Create React App (not recommended)
+- `npm run deploy` - Deploys to Vercel
 
 ## 📱 Features Overview
 
 ### Home Page
+- AI-powered insights and recommendations
 - Daily reflection display
 - Quick entry creation
 - Recent journal entries
@@ -129,18 +140,70 @@ src/
 - Streak counting
 - Progress statistics
 - Category organization
+- AI-powered goal suggestions
+
+### Spirituality Page
+- Scripture management and organization
+- Interfaith content and discussions
+- Spiritual growth tracking
+
+### Mental Wellness Page
+- Mindfulness tools and resources
+- Mental health tracking
+- Stress management tools
+
+### Physical Wellness Page
+- Fitness tracking integrations
+- Health data visualization
+- Workout and nutrition tracking
 
 ### Settings Page
+- OAuth app integrations
+- Environment variable management
 - User profile management
-- Notification preferences
-- Appearance settings
-- App information
+- App configuration
+
+## 🔗 OAuth Integrations
+
+- **Spotify**: Music playlists and wellness audio
+- **Strava**: Fitness activity tracking
+- **Garmin**: Health and fitness data
+- **Google Fit**: Health metrics integration
+- **Apple Health**: iOS health data (when available)
+
+## 🤖 AI Features
+
+- **Personalized Insights**: AI-powered wellness recommendations
+- **Goal Suggestions**: Smart goal creation based on user preferences
+- **Journal Analysis**: Insights from journal entries
+- **Spiritual Guidance**: AI-powered spiritual content recommendations
+
+## 🚀 Deployment
+
+### Deploy to Vercel (Recommended)
+
+1. **Push to GitHub**
+   ```bash
+   git push origin main
+   ```
+
+2. **Connect to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Configure environment variables
+   - Deploy automatically
+
+3. **Update OAuth Redirect URIs**
+   - Update your OAuth app settings with your Vercel domain
+   - Spotify: `https://your-app.vercel.app/`
+   - Strava: `https://your-app.vercel.app/oauth/strava/callback`
 
 ## 🔒 Security & Privacy
 
 - All user data is stored securely in Firebase Firestore
 - User authentication handled by Firebase Auth
-- Data is isolated per user account
+- OAuth tokens stored securely in localStorage
+- Environment variables protected in deployment
 - No third-party tracking or analytics
 
 ## 🤝 Contributing
@@ -161,8 +224,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Built with React, Firebase, and TailwindCSS
 - Icons by Lucide React
 - Animations by Framer Motion
+- AI powered by OpenAI
 
 ---
 
 **Flow with purpose. Grow with light.** ✨
-
