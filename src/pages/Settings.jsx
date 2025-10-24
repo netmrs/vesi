@@ -234,6 +234,7 @@ const Settings = ({ user, onSignOut }) => {
                   <div className="text-xs text-blue-600 space-y-1">
                     <p><strong>For Strava:</strong> Add REACT_APP_STRAVA_CLIENT_ID to your .env file</p>
                     <p><strong>For Spotify:</strong> Add REACT_APP_SPOTIFY_CLIENT_ID to your .env file</p>
+                    <p><strong>For Google Calendar:</strong> Add REACT_APP_GOOGLE_CALENDAR_CLIENT_ID to your .env file</p>
                     <p><strong>For Garmin:</strong> Add REACT_APP_GARMIN_CLIENT_ID to your .env file</p>
                   </div>
                   <button className="text-xs text-blue- self-start mt-2 underline">
@@ -616,11 +617,62 @@ const Settings = ({ user, onSignOut }) => {
                         <Calendar className="h-5 w-5 text-blue-600" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-gray-900">Calendar Apps</h4>
-                        <p className="text-sm text-gray-600">Google Calendar, Outlook, Apple Calendar</p>
+                        <h4 className="font-medium text-gray-900">Google Calendar</h4>
+                        <p className="text-sm text-gray-600">Sync your calendar events and spiritual goals</p>
+                        <div className="flex items-center space-x-2 mt-1">
+                          {integrations.find(i => i.name === 'googleCalendar')?.connected ? (
+                            <div className="flex items-center space-x-1">
+                              <CheckCircle className="h-3 w-3 text-green-500" />
+                              <span className="text-xs text-green-600">Connected</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center space-x-1">
+                              <XCircle className="h-3 w-3 text-gray-400" />
+                              <span className="text-xs text-gray-500">
+                                {integrations.find(i => i.name === 'googleCalendar')?.oauthEnabled ? 'Not connected' : 'OAuth not configured'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        {!integrations.find(i => i.name === 'googleCalendar')?.oauthEnabled && (
+                          <p className="text-xs text-yellow-600 mt-1">
+                            Add REACT_APP_GOOGLE_CALENDAR_CLIENT_ID to .env file
+                          </p>
+                        )}
                       </div>
                     </div>
-                    <button className="btn-primary text-sm">Connect</button>
+                    <div className="flex space-x-2">
+                      {integrations.find(i => i.name === 'googleCalendar')?.connected ? (
+                        <>
+                          <button 
+                            onClick={() => handleSyncData('googleCalendar')}
+                            disabled={syncing['googleCalendar']}
+                            className="btn-secondary text-sm flex items-center space-x-1"
+                          >
+                            {syncing['googleCalendar'] ? (
+                              <RefreshCw className="h-3 w-3 animate-spin" />
+                            ) : (
+                              <RefreshCw className="h-3 w-3" />
+                            )}
+                            <span>Sync</span>
+                          </button>
+                          <button 
+                            onClick={() => handleDisconnect('googleCalendar')}
+                            className="btn-primary text-sm"
+                          >
+                            Disconnect
+                          </button>
+                        </>
+                      ) : (
+                        <button 
+                          onClick={() => handleConnect('googleCalendar')}
+                          disabled={connecting['googleCalendar'] || !integrations.find(i => i.name === 'googleCalendar')?.oauthEnabled}
+                          className="btn-primary text-sm"
+                        >
+                          {connecting['googleCalendar'] ? 'Connecting...' : 'Connect'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
 

@@ -62,6 +62,14 @@ class OAuthService {
         clientId: process.env.REACT_APP_MYFITNESSPAL_CLIENT_ID,
         scopes: ['read'],
         redirectUri: `${window.location.origin}/oauth/myfitnesspal/callback`
+      },
+      googleCalendar: {
+        name: 'Google Calendar',
+        authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+        tokenUrl: 'https://oauth2.googleapis.com/token',
+        clientId: process.env.REACT_APP_GOOGLE_CALENDAR_CLIENT_ID,
+        scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
+        redirectUri: `${window.location.origin}/oauth/googlecalendar/callback`
       }
     };
   }
@@ -302,7 +310,8 @@ class OAuthService {
       spotify: 'https://api.spotify.com/v1',
       googleFit: 'https://www.googleapis.com/fitness/v1',
       fitbit: 'https://api.fitbit.com/1',
-      myfitnesspal: 'https://api.myfitnesspal.com/v1'
+      myfitnesspal: 'https://api.myfitnesspal.com/v1',
+      googleCalendar: 'https://www.googleapis.com/calendar/v3'
     };
 
     return baseUrls[appName] || '';
@@ -353,6 +362,21 @@ class OAuthService {
           '5. Add to your .env file:',
           '   REACT_APP_SPOTIFY_CLIENT_ID=your_client_id',
           '   REACT_APP_SPOTIFY_CLIENT_SECRET=your_client_secret'
+        ],
+        required: ['Client ID', 'Client Secret']
+      },
+      googleCalendar: {
+        steps: [
+          '1. Go to https://console.cloud.google.com/',
+          '2. Create a new project or select existing',
+          '3. Enable Google Calendar API',
+          '4. Go to Credentials > Create Credentials > OAuth 2.0 Client IDs',
+          '5. Set authorized redirect URIs:',
+          '   - http://localhost:3000/oauth/googlecalendar/callback (for development)',
+          '   - https://your-domain.com/oauth/googlecalendar/callback (for production)',
+          '6. Add to your .env file:',
+          '   REACT_APP_GOOGLE_CALENDAR_CLIENT_ID=your_client_id',
+          '   REACT_APP_GOOGLE_CALENDAR_CLIENT_SECRET=your_client_secret'
         ],
         required: ['Client ID', 'Client Secret']
       }

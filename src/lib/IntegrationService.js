@@ -59,6 +59,12 @@ class IntegrationService {
         scopes: ['read'],
         oauthEnabled: false // API not publicly available
       },
+      googleCalendar: {
+        name: 'Google Calendar',
+        baseURL: 'https://www.googleapis.com/calendar/v3',
+        scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
+        oauthEnabled: true
+      },
       youversion: {
         name: 'YouVersion Bible',
         baseURL: 'https://api.bible.com',
@@ -143,6 +149,8 @@ class IntegrationService {
         return await this.fetchSpotifyData(dataType);
       case 'fitbit':
         return await this.fetchFitbitData(dataType);
+      case 'googleCalendar':
+        return await this.fetchGoogleCalendarData(dataType);
       default:
         throw new Error(`Real data fetching not implemented for ${appName} yet`);
     }
@@ -206,6 +214,37 @@ class IntegrationService {
         duration: activity.duration,
         calories: activity.calories,
         date: activity.startTime
+      }))
+    };
+  }
+
+  // Fetch Google Calendar data
+  async fetchGoogleCalendarData(dataType) {
+    const calendars = await this.oauthService.makeAuthenticatedRequest(
+      'googleCalendar',
+      '/users/me/calendarList'
+    );
+    
+    // Get events from the primary calendar
+    const events = await this.oauthService.makeAuthenticatedRequest(
+      'googleCalendar',
+      '/calendars/primary/events?timeMin=' + new Date().toISOString() + '&maxResults=10&orderBy=startTime&singleEvents=true'
+    );
+    
+    return {
+      calendars: calendars.items.map(calendar => ({
+        id: calendar.id,
+        name: calendar.summary,
+        description: calendar.description,
+        primary: calendar.primary
+      })),
+      events: events.items.map(event => ({
+        id: event.id,
+        title: event.summary,
+        description: event.description,
+        start: event.start.dateTime || event.start.date,
+        end: event.end.dateTime || event.end.date,
+        location: event.location
       }))
     };
   }
@@ -350,6 +389,42 @@ class IntegrationService {
           totalMinutes: 245
         };
 
+      case 'googleCalendar':
+        return {
+          calendars: [
+            {
+              id: 'primary',
+              name: 'Primary Calendar',
+              description: 'Main calendar',
+              primary: true
+            },
+            {
+              id: 'work',
+              name: 'Work Calendar',
+              description: 'Work-related events',
+              primary: false
+            }
+          ],
+          events: [
+            {
+              id: '1',
+              title: 'Morning Prayer',
+              description: 'Daily spiritual practice',
+              start: new Date().toISOString(),
+              end: new Date(Date.now() + 1800000).toISOString(), // 30 minutes later
+              location: 'Home'
+            },
+            {
+              id: '2',
+              title: 'Team Meeting',
+              description: 'Weekly team sync',
+              start: new Date(Date.now() + 3600000).toISOString(), // 1 hour later
+              end: new Date(Date.now() + 5400000).toISOString(), // 1.5 hours later
+              location: 'Conference Room'
+            }
+          ]
+        };
+
       case 'youversion':
         return {
           readingPlan: {
@@ -445,6 +520,21 @@ class IntegrationService {
           totalMinutes: data.totalMinutes || 0
         };
 
+      case 'googleCalendar':
+        return {
+          type: 'calendar',
+          calendars: data.calendars || [],
+          events: data.events?.map(event => ({
+            id: event.id,
+            title: event.title,
+            description: event.description,
+            start: event.start,
+            end: event.end,
+            location: event.location,
+            source: 'googleCalendar'
+          })) || []
+        };
+
       case 'youversion':
         return {
           type: 'spiritual',
@@ -512,6 +602,17 @@ class IntegrationService {
           '2. Register your application',
           '3. Get Client ID and Client Secret',
           '4. Configure OAuth permissions'
+        ],
+        required: ['Client ID', 'Client Secret']
+      },
+      googleCalendar: {
+        steps: [
+          '1. Go to Google Cloud Console',
+          '2. Create a new project or select existing',
+          '3. Enable Google Calendar API',
+          '4. Create OAuth 2.0 credentials',
+          '5. Set authorized redirect URIs',
+          '6. Add Client ID to your .env file'
         ],
         required: ['Client ID', 'Client Secret']
       }
