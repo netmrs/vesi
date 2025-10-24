@@ -636,7 +636,7 @@ const Settings = ({ user, onSignOut }) => {
                         </div>
                         {!integrations.find(i => i.name === 'googleCalendar')?.oauthEnabled && (
                           <p className="text-xs text-yellow-600 mt-1">
-                            Add REACT_APP_GOOGLE_CALENDAR_CLIENT_ID to .env file
+                            Add REACT_APP_GOOGLECALENDAR_CLIENT_ID to .env file
                           </p>
                         )}
                       </div>

@@ -70,7 +70,7 @@ class OAuthService {
         name: 'Google Calendar',
         authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
         tokenUrl: 'https://oauth2.googleapis.com/token',
-        clientId: process.env.REACT_APP_GOOGLE_CALENDAR_CLIENT_ID,
+        clientId: process.env.REACT_APP_GOOGLECALENDAR_CLIENT_ID,
         scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
         redirectUri: `${this.baseUrl}/oauth/callback?provider=googleCalendar`
       }
@@ -378,8 +378,8 @@ class OAuthService {
           '   - http://localhost:3000/oauth/googlecalendar/callback (for development)',
           '   - https://your-domain.com/oauth/googlecalendar/callback (for production)',
           '6. Add to your .env file:',
-          '   REACT_APP_GOOGLE_CALENDAR_CLIENT_ID=your_client_id',
-          '   REACT_APP_GOOGLE_CALENDAR_CLIENT_SECRET=your_client_secret'
+           '   REACT_APP_GOOGLECALENDAR_CLIENT_ID=your_client_id',
+           '   REACT_APP_GOOGLECALENDAR_CLIENT_SECRET=your_client_secret'
         ],
         required: ['Client ID', 'Client Secret']
       }
