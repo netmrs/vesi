@@ -19,8 +19,8 @@ This guide helps you set up OAuth integrations that work for both development an
 **Developer Portal:** https://www.strava.com/settings/api
 
 **Redirect URIs to Add:**
-- `http://localhost:3000/oauth/strava/callback` (development)
-- `https://your-vercel-domain.vercel.app/oauth/strava/callback` (production)
+- `http://localhost:3000/oauth/callback` (development)
+- `https://your-vercel-domain.vercel.app/oauth/callback` (production)
 
 **Environment Variables:**
 ```
@@ -32,8 +32,8 @@ REACT_APP_STRAVA_CLIENT_SECRET=your_strava_client_secret
 **Developer Portal:** https://developer.spotify.com/dashboard
 
 **Redirect URIs to Add:**
-- `http://localhost:3000/oauth/spotify/callback` (development)
-- `https://your-vercel-domain.vercel.app/oauth/spotify/callback` (production)
+- `http://localhost:3000/oauth/callback` (development)
+- `https://your-vercel-domain.vercel.app/oauth/callback` (production)
 
 **Environment Variables:**
 ```
@@ -45,8 +45,8 @@ REACT_APP_SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 **Developer Portal:** https://console.cloud.google.com/
 
 **Redirect URIs to Add:**
-- `http://localhost:3000/oauth/googlecalendar/callback` (development)
-- `https://your-vercel-domain.vercel.app/oauth/googlecalendar/callback` (production)
+- `http://localhost:3000/oauth/callback` (development)
+- `https://your-vercel-domain.vercel.app/oauth/callback` (production)
 
 **Environment Variables:**
 ```
@@ -58,8 +58,8 @@ REACT_APP_GOOGLE_CALENDAR_CLIENT_SECRET=your_google_calendar_client_secret
 **Developer Portal:** https://console.cloud.google.com/
 
 **Redirect URIs to Add:**
-- `http://localhost:3000/oauth/googlefit/callback` (development)
-- `https://your-vercel-domain.vercel.app/oauth/googlefit/callback` (production)
+- `http://localhost:3000/oauth/callback` (development)
+- `https://your-vercel-domain.vercel.app/oauth/callback` (production)
 
 **Environment Variables:**
 ```
@@ -71,8 +71,8 @@ REACT_APP_GOOGLE_FIT_CLIENT_SECRET=your_google_fit_client_secret
 **Developer Portal:** https://dev.fitbit.com/apps
 
 **Redirect URIs to Add:**
-- `http://localhost:3000/oauth/fitbit/callback` (development)
-- `https://your-vercel-domain.vercel.app/oauth/fitbit/callback` (production)
+- `http://localhost:3000/oauth/callback` (development)
+- `https://your-vercel-domain.vercel.app/oauth/callback` (production)
 
 **Environment Variables:**
 ```
@@ -128,14 +128,24 @@ REACT_APP_FITBIT_CLIENT_SECRET=your_fitbit_client_secret
 
 ---
 
-## 📝 Dynamic Redirect URI System
+## 📝 Universal Redirect URI System
 
-The app now automatically uses the correct redirect URI based on the current domain:
+The app now uses a **single universal redirect URI** for all OAuth providers:
 
-- **Development:** `http://localhost:3000/oauth/{provider}/callback`
-- **Production:** `https://your-domain.vercel.app/oauth/{provider}/callback`
+- **Development:** `http://localhost:3000/oauth/callback`
+- **Production:** `https://your-domain.vercel.app/oauth/callback`
 
-This means you only need to set up the redirect URIs once, and they'll work for all deployments!
+### **How It Works:**
+1. **Single redirect URI** handles all OAuth callbacks
+2. **Provider identification** via URL parameter (`?provider=strava`)
+3. **Automatic routing** to the correct integration handler
+4. **One URI to rule them all** - no more managing multiple redirect URIs!
+
+### **Benefits:**
+- ✅ **Simplified setup** - only one redirect URI per environment
+- ✅ **Easy maintenance** - no need to update multiple URIs
+- ✅ **Automatic scaling** - works for any number of integrations
+- ✅ **Cleaner OAuth provider settings** - less clutter in developer consoles
 
 ---
 
