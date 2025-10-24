@@ -30,9 +30,13 @@ const OAuthCallback = () => {
         throw new Error('Missing authorization code or state parameter');
       }
 
-      // For now, we'll assume Spotify since that's what we're testing
-      // In a real app, you'd store the app name in the state parameter
-      const oauthAppName = 'spotify';
+      // Get the provider from the URL parameter
+      const provider = searchParams.get('provider');
+      if (!provider) {
+        throw new Error('Missing provider parameter');
+      }
+      
+      const oauthAppName = provider;
       setAppName(oauthAppName);
 
       setStatus('processing');
