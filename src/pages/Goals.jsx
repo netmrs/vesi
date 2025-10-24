@@ -6,6 +6,7 @@ import GoalOrganization from '../components/GoalOrganization';
 import AIGoalSuggestions from '../components/AIGoalSuggestions';
 import AIGoalWritingAssistant from '../components/AIGoalWritingAssistant';
 import GamificationSystem from '../components/GamificationSystem';
+import CalendarInsights from '../components/CalendarInsights';
 import { generateId, defaultGoals } from '../lib/utils';
 
 const Goals = ({ goals, onToggleGoal, onAddGoal, onDeleteGoal, entries, user }) => {
@@ -16,13 +17,14 @@ const Goals = ({ goals, onToggleGoal, onAddGoal, onDeleteGoal, entries, user }) 
   const [timePeriodFilter, setTimePeriodFilter] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
 
-  const categories = ['organization', 'ai-suggestions', 'ai-writing', 'gamification', 'all', 'spiritual', 'health', 'mindfulness', 'service', 'learning'];
+  const categories = ['organization', 'ai-suggestions', 'ai-writing', 'gamification', 'calendar-insights', 'all', 'spiritual', 'health', 'mindfulness', 'service', 'learning'];
   
   const categoryLabels = {
     'organization': 'Organization',
     'ai-suggestions': 'AI Suggestions', 
     'ai-writing': 'AI Writing Assistant',
     'gamification': 'Achievements',
+    'calendar-insights': 'Calendar Insights',
     'all': 'All Goals',
     'spiritual': 'Spiritual',
     'health': 'Health',
@@ -347,6 +349,12 @@ const Goals = ({ goals, onToggleGoal, onAddGoal, onDeleteGoal, entries, user }) 
           goals={goals}
           entries={entries}
           user={user}
+        />
+      )}
+      
+      {activeTab === 'calendar-insights' && (
+        <CalendarInsights
+          onAddGoal={handleAddGoal}
         />
       )}
       

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Activity, 
@@ -16,11 +16,16 @@ import {
   Dumbbell,
   Utensils,
   Moon,
-  Droplets
+  Droplets,
+  Trophy,
+  Flame
 } from 'lucide-react';
+import dataIntegrationService from '../lib/DataIntegrationService';
 
 const Physical = ({ user, goals = [], entries = [] }) => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [fitnessInsights, setFitnessInsights] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: Activity },
@@ -30,23 +35,45 @@ const Physical = ({ user, goals = [], entries = [] }) => {
     { id: 'hydration', label: 'Hydration', icon: Droplets }
   ];
 
-  // Mock physical health data
+  // Load fitness insights when component mounts
+  useEffect(() => {
+    const loadFitnessData = async () => {
+      setLoading(true);
+      try {
+        const insights = await dataIntegrationService.getFitnessInsights();
+        setFitnessInsights(insights);
+      } catch (error) {
+        console.error('Error loading fitness data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadFitnessData();
+  }, []);
+
+  // Physical health data - use real Strava data when available
   const physicalHealthData = {
-    stepsToday: 8542,
-    caloriesBurned: 320,
+    stepsToday: fitnessInsights?.weeklyStats?.totalDistance ? 
+      Math.round(fitnessInsights.weeklyStats.totalDistance * 1000) : 8542,
+    caloriesBurned: fitnessInsights?.weeklyStats?.totalCalories || 320,
     waterIntake: 6, // glasses
     sleepHours: 7.5,
-    weeklyWorkouts: 4,
+    weeklyWorkouts: fitnessInsights?.weeklyStats?.activityCount || 4,
     currentWeight: 165,
     weeklyGoals: [
       { id: 1, title: 'Daily 10k steps', completed: 5, total: 7 },
-      { id: 2, title: 'Workout 4x per week', completed: 3, total: 4 },
+      { id: 2, title: 'Workout 4x per week', completed: fitnessInsights?.weeklyStats?.activityCount || 3, total: 4 },
       { id: 3, title: 'Drink 8 glasses water', completed: 6, total: 7 }
     ],
     insights: [
-      'Great job maintaining your step goal this week!',
+      fitnessInsights?.weeklyStats?.activityCount > 3 ? 
+        `Great job completing ${fitnessInsights.weeklyStats.activityCount} activities this week!` :
+        'Great job maintaining your step goal this week!',
       'Your sleep quality has improved 15% compared to last month',
-      'Consider adding more protein to support your fitness goals'
+      fitnessInsights?.achievements?.length > 0 ? 
+        `You've unlocked ${fitnessInsights.achievements.length} new achievements!` :
+        'Consider adding more protein to support your fitness goals'
     ]
   };
 
@@ -203,6 +230,62 @@ const Physical = ({ user, goals = [], entries = [] }) => {
                 ))}
               </div>
             </div>
+
+            {/* Strava Achievements */}
+            {fitnessInsights?.achievements?.length > 0 && (
+              <div className="card">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Trophy className="h-5 w-5 text-yellow-500 mr-2" />
+                  Recent Achievements
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {fitnessInsights.achievements.slice(0, 4).map((achievement, index) => (
+                    <div key={index} className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                      <div className="text-2xl">{achievement.icon}</div>
+                      <div>
+                        <h4 className="font-medium text-gray-900">{achievement.title}</h4>
+                        <p className="text-sm text-gray-600">{achievement.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Recent Strava Activities */}
+            {fitnessInsights?.recentActivities?.length > 0 && (
+              <div className="card">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                  <Activity className="h-5 w-5 text-vesi-deep mr-2" />
+                  Recent Activities
+                </h3>
+                <div className="space-y-3">
+                  {fitnessInsights.recentActivities.map((activity, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-vesi-light rounded-full flex items-center justify-center">
+                          <Activity className="h-5 w-5 text-vesi-deep" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900">{activity.name || 'Activity'}</h4>
+                          <p className="text-sm text-gray-600">
+                            {new Date(activity.start_date).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm font-medium text-gray-900">
+                          {activity.distance ? `${Math.round(activity.distance / 1000 * 100) / 100}km` : 'N/A'}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {activity.moving_time ? `${Math.round(activity.moving_time / 60)}min` : 'N/A'}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         );
 
