@@ -6,6 +6,9 @@ class OAuthService {
     console.log('STRAVA_CLIENT_ID:', process.env.REACT_APP_STRAVA_CLIENT_ID ? 'LOADED' : 'NOT FOUND');
     console.log('STRAVA_CLIENT_SECRET:', process.env.REACT_APP_STRAVA_CLIENT_SECRET ? 'LOADED' : 'NOT FOUND');
     
+    // Get base URL for redirect URIs
+    this.baseUrl = window.location.origin;
+    
     this.oauthConfigs = {
       strava: {
         name: 'Strava',
@@ -13,7 +16,7 @@ class OAuthService {
         tokenUrl: 'https://www.strava.com/oauth/token',
         clientId: process.env.REACT_APP_STRAVA_CLIENT_ID,
         scopes: ['read,activity:read_all'],
-        redirectUri: `${window.location.origin}/oauth/strava/callback`
+        redirectUri: `${this.baseUrl}/oauth/strava/callback`
       },
       garmin: {
         name: 'Garmin Connect',
@@ -21,7 +24,7 @@ class OAuthService {
         tokenUrl: 'https://connect.garmin.com/oauthConfirm/oauth/token',
         clientId: process.env.REACT_APP_GARMIN_CLIENT_ID,
         scopes: ['read'],
-        redirectUri: `${window.location.origin}/oauth/garmin/callback`
+        redirectUri: `${this.baseUrl}/oauth/garmin/callback`
       },
       spotify: {
         name: 'Spotify',
@@ -29,7 +32,7 @@ class OAuthService {
         tokenUrl: 'https://accounts.spotify.com/api/token',
         clientId: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
         scopes: ['user-read-private', 'user-read-email', 'playlist-read-private', 'user-read-playback-state'],
-        redirectUri: `${window.location.origin}/`
+        redirectUri: `${this.baseUrl}/oauth/spotify/callback`
       },
       googleFit: {
         name: 'Google Fit',
@@ -37,7 +40,7 @@ class OAuthService {
         tokenUrl: 'https://oauth2.googleapis.com/token',
         clientId: process.env.REACT_APP_GOOGLE_FIT_CLIENT_ID,
         scopes: ['https://www.googleapis.com/auth/fitness.activity.read'],
-        redirectUri: `${window.location.origin}/oauth/googlefit/callback`
+        redirectUri: `${this.baseUrl}/oauth/googlefit/callback`
       },
       appleHealth: {
         name: 'Apple Health',
@@ -45,7 +48,7 @@ class OAuthService {
         tokenUrl: 'https://appleid.apple.com/auth/token',
         clientId: process.env.REACT_APP_APPLE_HEALTH_CLIENT_ID,
         scopes: ['health:read'],
-        redirectUri: `${window.location.origin}/oauth/applehealth/callback`
+        redirectUri: `${this.baseUrl}/oauth/applehealth/callback`
       },
       fitbit: {
         name: 'Fitbit',
@@ -53,7 +56,7 @@ class OAuthService {
         tokenUrl: 'https://api.fitbit.com/oauth2/token',
         clientId: process.env.REACT_APP_FITBIT_CLIENT_ID,
         scopes: ['activity', 'sleep', 'heartrate'],
-        redirectUri: `${window.location.origin}/oauth/fitbit/callback`
+        redirectUri: `${this.baseUrl}/oauth/fitbit/callback`
       },
       myfitnesspal: {
         name: 'MyFitnessPal',
@@ -61,7 +64,7 @@ class OAuthService {
         tokenUrl: 'https://oauth.myfitnesspal.com/oauth2/token',
         clientId: process.env.REACT_APP_MYFITNESSPAL_CLIENT_ID,
         scopes: ['read'],
-        redirectUri: `${window.location.origin}/oauth/myfitnesspal/callback`
+        redirectUri: `${this.baseUrl}/oauth/myfitnesspal/callback`
       },
       googleCalendar: {
         name: 'Google Calendar',
@@ -69,7 +72,7 @@ class OAuthService {
         tokenUrl: 'https://oauth2.googleapis.com/token',
         clientId: process.env.REACT_APP_GOOGLE_CALENDAR_CLIENT_ID,
         scopes: ['https://www.googleapis.com/auth/calendar.readonly'],
-        redirectUri: `${window.location.origin}/oauth/googlecalendar/callback`
+        redirectUri: `${this.baseUrl}/oauth/googlecalendar/callback`
       }
     };
   }
